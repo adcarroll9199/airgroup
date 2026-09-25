@@ -1,0 +1,3 @@
+#!/bin/sh
+# Called by shairport-sync with the AirPlay volume appended: -30.0 (quiet) .. 0.0 dB, -144.0 = mute.
+exec /usr/bin/curl -fsS -m 3 -o /dev/null -X POST "http://127.0.0.1:@HTTP_PORT@/api/volume?db=$1"

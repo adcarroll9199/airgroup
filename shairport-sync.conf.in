@@ -1,0 +1,22 @@
+// Written by the airgroup installer. Your previous config is in /etc/shairport-sync.conf.orig
+general =
+{
+	name = "@AIRPLAY_NAME@";
+	output_backend = "pipe";
+	// Send full-scale audio and let the phone's volume slider drive the speaker group instead.
+	ignore_volume_control = "yes";
+	run_this_when_volume_is_set = "/usr/local/bin/airgroup-volume ";
+};
+
+sessioncontrol =
+{
+	run_this_before_play_begins = "/usr/bin/curl -fsS -m 3 -X POST http://127.0.0.1:@HTTP_PORT@/api/start";
+	run_this_after_play_ends = "/usr/bin/curl -fsS -m 3 -X POST http://127.0.0.1:@HTTP_PORT@/api/stop";
+	wait_for_completion = "no";
+	allow_session_interruption = "yes";
+};
+
+pipe =
+{
+	name = "/run/airgroup/audio.fifo";
+};
