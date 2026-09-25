@@ -20,21 +20,27 @@ iPhone ──AirPlay──▶ shairport-sync ──PCM (FIFO)──▶ airgroup 
 
 ## Install
 
-1. Flash **Raspberry Pi OS Lite (64-bit)** with Raspberry Pi Imager. Set up Wi-Fi and SSH there.
-   The Pi must be on the same network/VLAN as the speakers. The Pi Zero 2 W only has 2.4 GHz Wi-Fi,
-   which is fine for this.
+1. Flash the SD card with **Raspberry Pi Imager**: device *Raspberry Pi Zero 2 W*, OS
+   *Raspberry Pi OS Lite (64-bit)*. Under **Edit settings**:
+   - **General:** set the hostname (e.g. `airgroup`), a username and password, and your Wi-Fi.
+     The Zero 2 W only does **2.4 GHz**, and network names are case-sensitive.
+   - **Services:** turn on **SSH** with public-key authentication and paste your Mac's public key.
+
+   Put the card in the Pi and power it through the **PWR IN** port. The first boot takes a few minutes.
 2. Copy this folder to the Pi and run the installer with your group's name exactly as it appears
-   in the Google Home app:
+   in the Google Home app. `sudo` will ask for the Pi password you set in Imager.
 
    ```bash
-   scp -r airgroup pi@raspberrypi.local:~
-   ssh pi@raspberrypi.local
-   cd airgroup && sudo ./install.sh "Whole House"
+   scp -r airgroup adam@airgroup.local:~
+   ssh -t adam@airgroup.local 'cd airgroup && sudo ./install.sh "All Speakers"'
    ```
 
-   A second argument sets a different AirPlay name: `sudo ./install.sh "Whole House" "Pi Speakers"`.
+   A second argument sets a different AirPlay name: `sudo ./install.sh "All Speakers" "Pi Speakers"`.
 
 3. On the iPhone, open Apple Music, tap the AirPlay icon, and choose the new speaker.
+
+Tested on a Pi Zero 2 W running Raspberry Pi OS 13 (Trixie) with shairport-sync 4.3.7, playing
+to a group of Nest Audio and Home Mini speakers.
 
 If you're not sure of the group's exact name, list what the Pi can see:
 
@@ -71,6 +77,11 @@ If you're not sure of the group's exact name, list what the Pi can see:
 | `No Cast device or group named ...` | Run `--list`. The name must match exactly. The Pi and speakers need mDNS/multicast between them (watch out for guest networks and "AP isolation") |
 | Casting starts but nothing plays | The speakers must be able to reach `http://<pi-ip>:8090`. If the Pi has several addresses, set `ADVERTISE_HOST` |
 | Status shows `preempted` | Something else took over the group. Choose the AirPlay speaker again, or press **Cast now** |
+
+## Pico W version (experimental)
+
+[`pico/`](pico/) holds an in-progress port to the Raspberry Pi Pico W microcontroller. It can
+already drive a Cast group, but it can't receive AirPlay yet. See its README.
 
 ## Uninstall
 

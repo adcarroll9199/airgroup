@@ -1,0 +1,7 @@
+# Copy to config.local.cmake (git-ignored) and fill in.
+set(WIFI_SSID "your-wifi-name")
+set(WIFI_PASSWORD "your-wifi-password")
+# Speaker group name exactly as in the Google Home app.
+set(CAST_TARGET "All Speakers")
+# Step-1 test: how long to play the test tone before stopping (seconds).
+set(TEST_SECONDS 30)
